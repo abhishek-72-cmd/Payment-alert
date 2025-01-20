@@ -1,0 +1,32 @@
+body {
+    background-image: url('https://cdn.pixabay.com/photo/2017/08/07/19/45/ecommerce-2607114_960_720.jpg');
+    background-size: cover;
+    background-position: center;
+    color: #fff;
+  }
+  
+.card {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+  }
+  
+  .card h2 {
+    color: #333;
+  }
+  
+  .btn-primary {
+    background-color: #6a11cb;
+    border: none;
+  }
+  
+  .btn-primary:hover {
+    background-color: #2575fc;
+  }
+  
+  .text-muted a {
+    color: #6a11cb;
+  }
+  
+  .text-muted a:hover {
+    text-decoration: underline;
+  }
