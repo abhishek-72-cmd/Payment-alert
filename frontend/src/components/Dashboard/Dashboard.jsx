@@ -2,8 +2,12 @@ import React, { useEffect, useState,navigate } from 'react';
 import { Card, Button, Modal, Form } from 'react-bootstrap';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import '../../pages/pages.css'
 
-const Dashboard = () => {
+
+
+
+  const Dashboard = () => {
   const navigate = useNavigate();
   const [userProfile, setUserProfile] = useState({ name: '', email: '' });
   const [walletBalance, setWalletBalance] = useState(null);
@@ -42,11 +46,15 @@ const Dashboard = () => {
       }
     };
 
+
+    
     const fetchWalletBalance = async () => {
       if (!userId || !token) {
         console.error('User ID or token is missing. Cannot fetch wallet balance.');
         return;
       }
+
+
 
       try {
         console.log('Attempting to fetch wallet balance...');
@@ -58,6 +66,8 @@ const Dashboard = () => {
             },
           }
         );
+
+
         console.log('Wallet Balance Fetched:', response.data);
         setWalletBalance(response.data.remainingBalance);
       } catch (error) {
@@ -66,24 +76,62 @@ const Dashboard = () => {
       }
     };
 
+
+
     fetchUserProfile();
     fetchWalletBalance();
   }, [userId, token]);
 
+
+
+  // const handleAddFunds = async () => {
+  //   if (!amountToAdd || isNaN(amountToAdd) || Number(amountToAdd) <= 0) {
+  //     setError('Please enter a valid amount.');
+  //     return;
+  //   }
+
+  //   try {
+  //     const response = await axios.post(
+  //       `http://localhost:4000/api/payments/add`,
+  //       {
+  //         userId,
+  //         type: 'Wallet Top-Up',
+  //         totalAmount: walletBalance,
+  //         AddedAmount: Number(amountToAdd),
+  //         remainingBalance: walletBalance + Number(amountToAdd),
+  //       },
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       } 
+  //     );
+  //     console.log('Funds added successfully:', response.data);
+
+  //     // Update wallet balance after adding funds
+  //     setWalletBalance((prevBalance) => prevBalance + Number(amountToAdd));
+  //     setShowModal(false); // Close the modal
+  //     setAmountToAdd(''); // Reset the form
+  //     setError('');
+  //   } catch (error) {
+  //     console.error('Failed to add funds:', error.response?.data || error.message);
+  //     setError('Failed to add funds. Please try again.');
+  //   }
+  
+  //  };
+  
   const handleAddFunds = async () => {
     if (!amountToAdd || isNaN(amountToAdd) || Number(amountToAdd) <= 0) {
       setError('Please enter a valid amount.');
       return;
     }
-
+  
     try {
       const response = await axios.post(
         `http://localhost:4000/api/payments/add`,
         {
-          userId,
-          type: 'Wallet Top-Up',
-          totalAmount: walletBalance,
-          AddedAmount: Number(amountToAdd),
+          userId, // Send userId
+          amount: Number(amountToAdd) // Match backend's expected field name
         },
         {
           headers: {
@@ -91,21 +139,18 @@ const Dashboard = () => {
           },
         } 
       );
-      console.log('Funds added successfully:', response.data);
-
-      // Update wallet balance after adding funds
-      setWalletBalance((prevBalance) => prevBalance + Number(amountToAdd));
-      setShowModal(false); // Close the modal
-      setAmountToAdd(''); // Reset the form
+  
+      // Update balance from the backend response
+      setWalletBalance(response.data.balance);
+      setShowModal(false);
+      setAmountToAdd('');
       setError('');
     } catch (error) {
-      console.error('Failed to add funds:', error.response?.data || error.message);
+      console.error('Failed to add funds:', error);
       setError('Failed to add funds. Please try again.');
     }
+  };
   
-   };
-
-
   if (isLoading) {
     return <p>Loading...</p>;
   }
@@ -115,6 +160,7 @@ const Dashboard = () => {
   }
 
   return (
+
     <div className="dashboard container mt-4">
       {/* User Profile Section */}
       <Card className="mb-4">
@@ -130,10 +176,13 @@ const Dashboard = () => {
       <Card className="mb-4">
         <Card.Body>
           <Card.Title>Check Wallet Balance</Card.Title>
+          
           <p>
             <strong>Remaining Balance:</strong>{' '}
             {walletBalance !== null ? `₹${walletBalance}` : 'Balance not available'}
           </p>
+
+
           <Button variant="success" onClick={() => setShowModal(true)}>
             Add Funds
           </Button>
@@ -146,12 +195,14 @@ const Dashboard = () => {
 
 
 
-
-
       <Card className="mb-4">
       
-      <Button variant="primary" onClick={() => navigate('/PayBills')}>
-      Pay Bills
+      <Button variant="primary" id='secondary' onClick={() => navigate('/Alerts')}>
+      Create Alert
+    </Button>
+<br />
+    <Button id='secondary' onClick={() => navigate('/ViewAlerts')}>
+      your Alerts
     </Button>
 
       </Card>
@@ -177,7 +228,7 @@ const Dashboard = () => {
             </Form.Group>
             {error && <p className="text-danger">{error}</p>}
           </Form>
-        </Modal.Body>
+        </Modal.Body> 
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowModal(false)}>
             Cancel

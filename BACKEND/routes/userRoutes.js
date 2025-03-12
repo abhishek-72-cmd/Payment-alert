@@ -1,27 +1,28 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/userModel');
-const verifyToken = require('../routes/verifyToken'); 
+const { getUserProfile, getFullUserProfile,updateUserProfile } = require('../../BACKEND/controllers/userControler'); 
 
-// Adjust the path as needed
-router.get('/profile/:userId', async (req, res) => {
-  console.log('Route Hit');
-  console.log('UserId:', req.params.userId);
-  try {
-    const { userId } = req.params;
+// API to get basic user profile (name and email)
+//API http://localhost:4000/api/users/profile/67a61271c4e40f315571aeba
+
+router.get('/profile/:userId', getUserProfile);
+
+// API to get full user profile
+// API http://localhost:4000/api/users/Fullprofile/67a61271c4e40f315571aeba
+
+router.get('/Fullprofile/:userId', getFullUserProfile);
 
 
-    const user = await User.findById(userId);
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }res.json({
-      name: user.name,
-      email: user.email,
-    });
-  } catch (error) {
-    console.error('Error fetching user profile:', error);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
+
+//API to update the edited user profile
+//API http://localhost:4000/api/users/updateProfile/67a61271c4e40f315571aeba
+
+router.put('/updateProfile/:userId', updateUserProfile);
+
 
 module.exports = router;
+
+
+
+

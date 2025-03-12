@@ -2,6 +2,8 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import Login from './components/Auth/Login';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min";
 import Register from './components/Auth/Register';
 import Wallet from './components/Wallet/Wallet';
 import Dashboard from './components/Dashboard/Dashboard';
@@ -12,8 +14,10 @@ import Payments from './pages/Payments';
 import Notifications from './pages/Notofications';
 import Profile from './pages/profile';
 import HelpAndSupport from './pages/helpAndSupport';
-import PayBills from './components/PayBills/PayBills';
+import Alerts from './components/PayBills/Alerts';
 import UserOverview from './components/Dashboard/UserOverview'
+import ViewAlerts from './components/PayBills/ViewAlerts';
+
 function App() {
   const location = useLocation();
 
@@ -77,6 +81,17 @@ function App() {
             }
           />
 
+
+                   <Route
+            path="/ViewAlerts"
+            element={
+              <PrivateRoute>
+                <ViewAlerts/>
+              </PrivateRoute>
+            }
+          />
+
+
                <Route
             path="/Support"
             element={
@@ -89,27 +104,25 @@ function App() {
 
 
                   <Route
-            path="/PayBills"
+            path="/Alerts"
             element={
               <PrivateRoute>
-                <PayBills />
+                <Alerts />
               </PrivateRoute>
             }
+
+
+            
+
+
+
+            
           />
 
 
-
-                     <Route
-            path="/userOverview"
-            element={
-              <PrivateRoute>
-                <UserOverview />
-              </PrivateRoute>
-            }
-          />
+   <Route path="/UserOverview" element={ <PrivateRoute> <UserOverview name={'true'}  age= {24}/></PrivateRoute>}/></Routes> 
 
 
-        </Routes>
       </main>
       <Footer />
     </div>

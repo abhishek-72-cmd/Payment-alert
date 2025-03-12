@@ -120,9 +120,6 @@ const addPayment = async (req, res) => {
 
 
 
-
-
-
 // const getWalletBalance = async (req, res) => {
 //   try {
 //     const { userId } = req.params;
@@ -147,6 +144,10 @@ const addPayment = async (req, res) => {
 //     res.status(500).json({ message: 'Server error', error: err.message });
 //   }
 // };
+
+
+
+
 const getWalletBalance = async (req, res) => {
   try {
     const { userId } = req.params;
